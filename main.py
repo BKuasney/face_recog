@@ -37,20 +37,14 @@ if args['train'] == 'yes':
     person_name = args['person_name'].replace("_"," ")
     print('[INFO] - You choose train before start application')
 
-    # define params
+    # capture frames from video or webcam
     capture = Capture()
     capture.create_dir_train(person_name)
+    capture.capture_frames(media)
 
-    capture_ok = capture.capture_frames(media)
-
-    if capture_ok:
-        train = Train()
-        train.processing(detection_method, encodings_pickle)
-    #print(capture_ok)
-    #train.processing()
-
-#print('quit')
-#quit()
+    # train frames
+    train = Train()
+    train.processing(detection_method, encodings_pickle)
 
 # load pre-trained model
 print('[INFO] - Loading encodings...')
