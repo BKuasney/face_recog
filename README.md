@@ -44,7 +44,7 @@ python main.py --encodings encodings.pickle --train yes --person_name Power_Rang
 
 * To only start:
 ```
-python main.py --encodings encodings.pickle --train no --detection_method cnn
+python main.py --encodings encodings.pickle --train no --detection_method hog
 ```
 
 * To only start on raspberry:
