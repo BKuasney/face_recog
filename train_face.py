@@ -28,7 +28,7 @@ class Capture():
         '''Open webcam and save X frames into directory created before
         '''
 
-        if media == 'img':
+        if media == 'webcam':
             cap = cv2.VideoCapture(0)
             frame_i = 0
 

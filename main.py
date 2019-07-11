@@ -25,7 +25,7 @@ ap.add_argument('-t', '--train', type = str, default = 'not', choices = ['yes','
 ap.add_argument('-pn', '--person_name', type = str, help = 'Person name to colect and train')
 ap.add_argument('-e', '--encodings', required=True, help = 'path to serialized db of facial encodings')
 ap.add_argument('-d', '--detection_method', type=str, default='cnn', help = 'face detection model to use hog or cnn')
-ap.add_argument('-f', '--media', type=str, default='img', choices = ['img','vid'])
+ap.add_argument('-f', '--media', type=str, default='webcam', choices = ['webcam','video','rasp'])
 args = vars(ap.parse_args())
 
 detection_method = args['detection_method']

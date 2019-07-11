@@ -17,8 +17,9 @@
 ### Setup Linux
 
 ```
-git clone
+git clone <URL>
 cd <directory>
+pip install git+https://github.com/ageitgey/face_recognition_models
 pip install pipenv
 pipenv shell
 pipenv install face_recognition
@@ -39,15 +40,15 @@ python main.py --encodings encodings.pickle --train yes --person_name Power_Rang
 
 * To train and start on raspberry:
 ```
-python main.py --encodings encodings.pickle --train yes --person_name Power_Ranger --detection_method hog
+python main.py --encodings encodings.pickle --train yes --person_name Power_Ranger --detection_method hog --media rasp
 ```
 
 * To only start:
 ```
-python main.py --encodings encodings.pickle --train no --detection_method hog
+python main.py --encodings encodings.pickle --train not --detection_method hog
 ```
 
 * To only start on raspberry:
 ```
-python main.py --encodings encodings.pickle --train no --detection_method hog
+python main.py --encodings encodings.pickle --train not --detection_method hog --media rasp
 ```
