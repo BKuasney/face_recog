@@ -48,7 +48,7 @@ if args['train'] == 'yes':
 
 # load pre-trained model
 print('[INFO] - Loading encodings...')
-data = pickle.loads(open(args['encodings'],'rb').read())
+data = pickle.loads(open(args['encodings'],'rb').read(),encoding='latin1')
 
 # webcam
 video_capture = cv2.VideoCapture(0)

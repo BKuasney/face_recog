@@ -35,20 +35,5 @@ On raspberry detection_method need to be 'hog'. Is more faster, but, less accura
 
 * To train and start:
 ```
-python main.py --encodings encodings.pickle --train yes --person_name Power_Ranger --detection_method cnn
-```
-
-* To train and start on raspberry:
-```
-python main.py --encodings encodings.pickle --train yes --person_name Power_Ranger --detection_method hog --media rasp
-```
-
-* To only start:
-```
-python main.py --encodings encodings.pickle --train not --detection_method hog
-```
-
-* To only start on raspberry:
-```
-python main.py --encodings encodings.pickle --train not --detection_method hog --media rasp
+python main.py --encodings encodings.pickle --train yes --person_name Power_Ranger --detection_method cnn --media webcam
 ```
