@@ -7,6 +7,7 @@ import face_recognition
 import pickle
 import os
 import imutils
+from data_aquisition import DataAquisition
 #from scipy import ndimage
 
 class Capture():
@@ -29,11 +30,14 @@ class Capture():
         '''
 
         if media == 'webcam':
-            cap = cv2.VideoCapture(0)
+            data_aq = DataAquisition(media)
+            data_aq.initialize(0)
+            status, frame = data_aq.get()
+            #cap = cv2.VideoCapture(0)
             frame_i = 0
 
             while(True):
-                ret, frame = cap.read()
+                status, frame = data_aq.get()
                 img = frame
 
                 if frame_i % 2 == 0 or frame_i % 5 == 0:
