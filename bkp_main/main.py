@@ -18,6 +18,12 @@ Running face recognition on Live video from webcam
 
 """
 
+"""
+Esse script utiliza 1 frame para inferir encima de todos os frames obtidos pela webcam.
+Caso o movimento seja muito brusco, ele acaba gerando um " arrasto " na imagem
+Porem, esse processo parece ser mais real-time. Pode ser utilizado para aplicacoes mais especificas
+"""
+
 
 # argument parser
 ap = argparse.ArgumentParser()
@@ -71,14 +77,14 @@ process_this_frame = True
 output = pd.DataFrame(columns=['Name','Timestamp'])
 
 while status:
+    status, frame = data_aq.get()
+
+    # Resize frame of video to 1/4 size for faster face recognition processing
+    small_frame = cv2.resize(frame, (0,0), fx=0.25, fy=0.25)
+    # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
+    rgb_small_frame = small_frame[:, :, ::-1]
+
     if process_this_frame:
-        status, frame = data_aq.get()
-
-        # Resize frame of video to 1/4 size for faster face recognition processing
-        small_frame = cv2.resize(frame, (0,0), fx=0.25, fy=0.25)
-        # Convert the image from BGR color (which OpenCV uses) to RGB color (which face_recognition uses)
-        rgb_small_frame = small_frame[:, :, ::-1]
-
         """Find all the faces and face encodings in the current frame of video
         """
 

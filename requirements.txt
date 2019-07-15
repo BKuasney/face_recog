@@ -6,3 +6,4 @@ git+https://github.com/ageitgey/face_recognition_models
 opencv
 pandas==0.24.2
 imutils==0.5.2
+argparse
