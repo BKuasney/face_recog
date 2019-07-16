@@ -73,8 +73,9 @@ class DataAquisition:
                     yield ret, thFrame
                 yield False, None
 
-            self.read = read(input_)
 
+            self.read = read(input_)
+        return cap
 
     def get(self):
         return next(self.read)

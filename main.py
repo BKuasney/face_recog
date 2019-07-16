@@ -47,10 +47,10 @@ if args['train'] == 'yes':
     capture = Capture()
     capture.create_dir_train(person_name)
     capture.capture_frames(media, person_name, input, rotate)
-
+    
     # train frames
     train = Train()
-    train.processing(detection_method, encodings_pickle)
+    train.processing(detection_method, encodings_pickle, person_name)
 
 ###########################################################
 # model ###################################################

@@ -33,7 +33,7 @@ class Capture():
 
         if media == 'webcam':
             data_aq = DataAquisition(media)
-            data_aq.initialize(0)
+            cap = data_aq.initialize(0)
             status, frame = data_aq.get()
             #cap = cv2.VideoCapture(0)
             frame_i = 0
@@ -56,9 +56,10 @@ class Capture():
                 # limit to 60 frames to train
 
                 if frame_i == 50:
+                    cap.release()
                     break
 
-        cv2.destroyAllWindows()
+
 
         else:
             data_aq = DataAquisition(media)
@@ -70,21 +71,28 @@ class Capture():
             while status:
                 status, frame = data_aq.get()
                 img = frame
-                img = ndimage.rotate(img, rotate)
+
+                if rotate == '90':
+                    img = cv2.rotate(img, rotateCode = cv2.ROTATE_90_CLOCKWISE)
+                if rotate == '180':
+                    img = cv2.rotate(img, rotateCode = cv2.ROTATE_180)
+                if rotate == '270':
+                    img = cv2.rotate(img, rotateCode = cv2.ROTATE_90_COUNTERCLOCKWISE)
 
                 if frame_i % 2 == 0 or frame_i % 5 == 0:
                     cv2.imwrite('./img/{}/{}.jpg'.format(self.person_name, frame_i), img)
+
 
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
 
                 frame_i += 1
-                cv2.imshow('Window', img)
+                cv2.imshow('Window video', img)
 
-                if frame_i == 250:
+                if frame_i == 50:
                     break
 
-        #cap.release()
+
         cv2.destroyAllWindows()
 
         capture_ok = True
@@ -96,10 +104,11 @@ class Train():
     '''Train model with those frames
     '''
 
-    def processing(self, detection_method, encodings_pickle):
+    def processing(self, detection_method, encodings_pickle, person_name):
         print('[INFO] - Start train')
         self.detection_method = detection_method
         self.encodings_pickle = encodings_pickle
+        #self.imagePaths = list(paths.list_images('./img/{}'.format(person_name)))
         self.imagePaths = list(paths.list_images('./img'))
         self.known_encodings = []
         self.known_names = []
