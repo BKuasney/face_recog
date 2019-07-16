@@ -55,7 +55,7 @@ class Capture():
 
                 # limit to 60 frames to train
 
-                if frame_i == 50:
+                if frame_i == 200:
                     cap.release()
                     break
 
@@ -89,7 +89,7 @@ class Capture():
                 frame_i += 1
                 cv2.imshow('Window video', img)
 
-                if frame_i == 50:
+                if frame_i == 200:
                     break
 
 
