@@ -8,6 +8,8 @@ import pickle
 import os
 import imutils
 from data_aquisition import DataAquisition
+from scipy import ndimage
+import datetime
 #from scipy import ndimage
 
 class Capture():
@@ -25,7 +27,7 @@ class Capture():
             os.makedirs('./img/{}'.format(self.person_name))
 
 
-    def capture_frames(self,media):
+    def capture_frames(self,media,person_name,input,rotate):
         '''Open webcam and save X frames into directory created before
         '''
 
@@ -47,30 +49,42 @@ class Capture():
                     break
 
                 frame_i += 1
-                cv2.imshow('frame', img)
+                cv2.namedWindow('Window', cv2.WND_PROP_FULLSCREEN)
+                cv2.setWindowProperty('Window', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                cv2.imshow('Window', img)
 
                 # limit to 60 frames to train
 
-                if frame_i == 150:
+                if frame_i == 50:
                     break
 
+        cv2.destroyAllWindows()
+
         else:
-            vidcap = cv2.VideoCapture('./vid/video.mp4')
-            success, image = vidcap.read()
+            data_aq = DataAquisition(media)
+            data_aq.initialize(input)
+            status, frame = data_aq.get()
 
-            count = 0
+            frame_i = 0
 
-            while success:
-                if count % 2 == 0 or count % 5 == 0:
+            while status:
+                status, frame = data_aq.get()
+                img = frame
+                img = ndimage.rotate(img, rotate)
+
+                if frame_i % 2 == 0 or frame_i % 5 == 0:
                     cv2.imwrite('./img/{}/{}.jpg'.format(self.person_name, frame_i), img)
 
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
 
                 frame_i += 1
-                cv2.imshow('frame', img)
+                cv2.imshow('Window', img)
 
-        cap.release()
+                if frame_i == 250:
+                    break
+
+        #cap.release()
         cv2.destroyAllWindows()
 
         capture_ok = True
@@ -83,7 +97,7 @@ class Train():
     '''
 
     def processing(self, detection_method, encodings_pickle):
-        print('traaaaaaaaaaaaaaaaaaaaaaain')
+        print('[INFO] - Start train')
         self.detection_method = detection_method
         self.encodings_pickle = encodings_pickle
         self.imagePaths = list(paths.list_images('./img'))
@@ -95,7 +109,7 @@ class Train():
         known_names = self.known_names
 
         for (i, imagePath) in enumerate(self.imagePaths):
-            print('[INFO] - Processing image {}/{}'.format(i+1, len(self.imagePaths)))
+            print('[INFO][{}] - Processing image {}/{}'.format(datetime.datetime.now(), i+1, len(self.imagePaths)))
             name = imagePath.split(os.path.sep)[-2]
 
             # BGR to RGB

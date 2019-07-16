@@ -27,11 +27,14 @@ ap.add_argument('-e', '--encodings', required=True, help = 'path to serialized d
 ap.add_argument('-d', '--detection_method', type=str, default='cnn', help = 'face detection model to use hog or cnn')
 ap.add_argument('-m', '--media', type=str, default='webcam', choices = ['webcam','video','rasp','folder'])
 ap.add_argument('-i', '--input', default = None)
+ap.add_argument('-r', '--rotate', default = None, choices = ['90', '180', '270'])
 args = vars(ap.parse_args())
 
 detection_method = args['detection_method']
 encodings_pickle = args['encodings']
 media = args['media']
+input = args['input']
+rotate = args['rotate']
 
 ############################################################
 # If train #################################################
@@ -43,7 +46,7 @@ if args['train'] == 'yes':
     # capture frames from video or webcam
     capture = Capture()
     capture.create_dir_train(person_name)
-    capture.capture_frames(media)
+    capture.capture_frames(media, person_name, input, rotate)
 
     # train frames
     train = Train()
@@ -147,7 +150,9 @@ while status:
 
 
     # Display the resulting image
-    cv2.imshow('Video', frame)
+    cv2.namedWindow('Window', cv2.WND_PROP_FULLSCREEN)
+    cv2.setWindowProperty('Window', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+    cv2.imshow('Window', frame)
 
     # Hit 'q' on the keyboard to quit
     if cv2.waitKey(1) & 0xFF == ord('q'):
