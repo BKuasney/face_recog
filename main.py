@@ -58,7 +58,6 @@ data_aq = DataAquisition(args.media)
 data_aq.initialize(0)
 
 status, frame = data_aq.get()
-print(frame.shape)
 
 # Initialize variables
 names = []
