@@ -137,8 +137,6 @@ class Train():
 
         print('[INFO] - Serializing encodings...')
         data = {'encodings': known_encodings, 'names': known_names}
-        print(data)
-        print(self.encodings_pickle)
         f = open(self.encodings_pickle, 'wb')
         f.write(pickle.dumps(data))
         f.close()

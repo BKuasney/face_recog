@@ -33,16 +33,16 @@ pipenv install face_recognition
 
 * To train with webcam and start webcam:
 ```
-python3 main.py --encodings encodings.pickle --train yes --person_name Bruno_Kuasney --detection_method cnn --media webcam --input 0
+python3 main.py --encodings encodings.pickle --train yes --person_name Bruno_Kuasney --detection_method cnn --media webcam --input 0 --rotate 0
 ```
 * To only start webcam:
 ```
-python3 main.py --encodings encodings.pickle --train not --detection_method cnn --media webcam --input 0
+python3 main.py --encodings encodings.pickle --train not --detection_method cnn --media webcam --input 0 --rotate 0
 ```
 
 * To train with video and start webcam
 ```
-python3 main.py --encodings encodings.pickle --train yes --detection_method cnn --media video --input ./vid/video.mp4
+python3 main.py --encodings encodings.pickle --train yes --detection_method cnn --media video --input ./vid/video.mp4 --rotate 0
 ```
 
 ## **USAGE RASPBERRY PI 3**
@@ -51,15 +51,15 @@ On raspberry detection_method need to be 'hog'. Is more faster, but, less accura
 
 * to train with webcam and start webcam [not recommended]:
 ```
-python3 main.py --encodings encodings.pickle --train yes --person_name Bruno_Kuasney --detection_method hog --media webcam --input 0
+python3 main.py --encodings encodings.pickle --train yes --person_name Bruno_Kuasney --detection_method hog --media webcam --input 0 --rotate 0
 ```
 
 * To only start webcam:
 ```
-python3 main.py --encodings encodings.pickle --train not --detection_method hog --media webcam --input 0
+python3 main.py --encodings encodings.pickle --train not --detection_method hog --media webcam --input 0 --rotate 0
 ```
 
 * To train with video and start webcam [not recommended]
 ```
-python3 main.py --encodings encodings.pickle --train yes --person_name Bruno Kuasney --detection_method hog --media video --input ./vid/video.mp4
+python3 main.py --encodings encodings.pickle --train yes --person_name Bruno Kuasney --detection_method hog --media video --input ./vid/video.mp4 --rotate 0
 ```

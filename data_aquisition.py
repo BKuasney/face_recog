@@ -44,7 +44,6 @@ class DataAquisition:
             self.read = read(input_)
 
         elif self.mode == "video":
-            print(input_)
             cap = cv2.VideoCapture(input_)
             grabber = ImageGrabber(cap)
             grabber.start()
@@ -58,17 +57,13 @@ class DataAquisition:
             self.read = read(input_)
 
         elif self.mode == "webcam":
-            print('found webcam')
             cap = cv2.VideoCapture(0)
             grabber = ImageGrabber(cap)
             grabber.start()
 
             def read(input_):
-                print('def webcam module')
                 ret = True
                 while True:
-                    print('while webcam module')
-                    print(ret)
                     if ret != True: break
                     yield ret, thFrame
                 yield False, None

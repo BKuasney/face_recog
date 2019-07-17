@@ -9,6 +9,7 @@ from datetime import date
 from train_face import Capture
 from train_face import Train
 from data_aquisition import DataAquisition
+import time
 
 """
 
@@ -21,47 +22,39 @@ Running face recognition on Live video from webcam
 
 # argument parser
 ap = argparse.ArgumentParser()
-ap.add_argument('-t', '--train', type = str, default = 'not', choices = ['yes','not'])
+ap.add_argument('-t', '--train', type = str, default = 'not', choices = ['only_train','not','grab_images','grab_and_train'])
 ap.add_argument('-pn', '--person_name', type = str, help = 'Person name to colect and train')
 ap.add_argument('-e', '--encodings', required=True, help = 'path to serialized db of facial encodings')
 ap.add_argument('-d', '--detection_method', type=str, default='cnn', help = 'face detection model to use hog or cnn')
 ap.add_argument('-m', '--media', type=str, default='webcam', choices = ['webcam','video','rasp','folder'])
 ap.add_argument('-i', '--input', default = None)
 ap.add_argument('-r', '--rotate', default = None, choices = ['0', '90', '180', '270'])
-args = vars(ap.parse_args())
+args = ap.parse_args()
 
-detection_method = args['detection_method']
-encodings_pickle = args['encodings']
-media = args['media']
-input = args['input']
-rotate = args['rotate']
+#  I F   T R A I N   #
 
-############################################################
-# If train #################################################
-############################################################
-if args['train'] == 'yes':
-    person_name = args['person_name'].replace("_"," ")
+# GRAB
+if args.train == 'grab_and_train' or args.train == 'grab_images':
+    person_name = args.person_name.replace("_"," ")
     print('[INFO] - You choose train before start application')
 
     # capture frames from video or webcam
     capture = Capture()
-    capture.create_dir_train(person_name)
-    capture.capture_frames(media, person_name, input, rotate)
+    capture.create_dir_train(args.person_name)
+    capture.capture_frames(args.media, args.person_name, args.input, args.rotate)
 
-    # train frames
+# TRAIN
+if args.train == 'only_train' or args.train == 'grab_and_train':
     train = Train()
-    train.processing(detection_method, encodings_pickle, person_name)
+    train.processing(args.detection_method, args.encodings_pickle, args.person_name)
 
-###########################################################
-# model ###################################################
-###########################################################
+#  M O D E L  #
 
 # load pre-trained model
 print('[INFO] - Loading encodings...')
-data = pickle.loads(open(args['encodings'],'rb').read(),encoding='latin1')
+data = pickle.loads(open(args.encodings,'rb').read(),encoding='latin1')
 
-
-data_aq = DataAquisition(media)
+data_aq = DataAquisition(args.media)
 data_aq.initialize(0)
 
 status, frame = data_aq.get()
@@ -70,11 +63,13 @@ print(frame.shape)
 # Initialize variables
 names = []
 process_this_frame = True
-# output dataframe
+fps = []
 output = pd.DataFrame(columns=['Name','Timestamp'])
+
 
 while status:
     if process_this_frame:
+        start = time.time()
         status, frame = data_aq.get()
 
         # Resize frame of video to 1/4 size for faster face recognition processing
@@ -85,7 +80,7 @@ while status:
         """Find all the faces and face encodings in the current frame of video
         """
 
-        faces_location = face_recognition.face_locations(rgb_small_frame, model=args['detection_method'])
+        faces_location = face_recognition.face_locations(rgb_small_frame, model = args.detection_method)
         faces_encodings = face_recognition.face_encodings(rgb_small_frame, faces_location)
 
         faces_names = []
@@ -158,6 +153,8 @@ while status:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Release handle to the webcam
-#frame.release()
+    # FPS
+    fps.append(time.time() - start)
+    print('[INFO] - FPS: {}'.format(1/np.mean(fps)))
+
 cv2.destroyAllWindows()
