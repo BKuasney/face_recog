@@ -27,7 +27,7 @@ ap.add_argument('-e', '--encodings', required=True, help = 'path to serialized d
 ap.add_argument('-d', '--detection_method', type=str, default='cnn', help = 'face detection model to use hog or cnn')
 ap.add_argument('-m', '--media', type=str, default='webcam', choices = ['webcam','video','rasp','folder'])
 ap.add_argument('-i', '--input', default = None)
-ap.add_argument('-r', '--rotate', default = None, choices = ['90', '180', '270'])
+ap.add_argument('-r', '--rotate', default = None, choices = ['0', '90', '180', '270'])
 args = vars(ap.parse_args())
 
 detection_method = args['detection_method']
@@ -47,7 +47,7 @@ if args['train'] == 'yes':
     capture = Capture()
     capture.create_dir_train(person_name)
     capture.capture_frames(media, person_name, input, rotate)
-    
+
     # train frames
     train = Train()
     train.processing(detection_method, encodings_pickle, person_name)

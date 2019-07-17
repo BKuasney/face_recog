@@ -35,7 +35,7 @@ class Capture():
             data_aq = DataAquisition(media)
             cap = data_aq.initialize(0)
             status, frame = data_aq.get()
-            #cap = cv2.VideoCapture(0)
+
             frame_i = 0
 
             while(True):
@@ -49,6 +49,7 @@ class Capture():
                     break
 
                 frame_i += 1
+
                 cv2.namedWindow('Window', cv2.WND_PROP_FULLSCREEN)
                 cv2.setWindowProperty('Window', cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
                 cv2.imshow('Window', img)
@@ -58,8 +59,6 @@ class Capture():
                 if frame_i == 200:
                     cap.release()
                     break
-
-
 
         else:
             data_aq = DataAquisition(media)
