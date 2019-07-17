@@ -8,7 +8,6 @@ import pickle
 import os
 import imutils
 from data_aquisition import DataAquisition
-from scipy import ndimage
 import datetime
 #from scipy import ndimage
 
