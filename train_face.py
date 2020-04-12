@@ -10,6 +10,7 @@ import imutils
 from data_aquisition import DataAquisition
 import datetime
 #from scipy import ndimage
+# teste
 
 class Capture():
     '''Create a folder with user name and capture frames to train
